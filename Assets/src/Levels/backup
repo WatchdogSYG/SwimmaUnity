@@ -1,0 +1,292 @@
+﻿//using System;
+//using System.Collections.Generic;
+//using System.Linq;
+//using System.Text;
+//using Microsoft.Xna.Framework;
+//using Swimma.GameLibrary.BackgroundManager;
+//using Microsoft.Xna.Framework.Content;
+//using Microsoft.Xna.Framework.Graphics;
+
+//namespace Swimma.Levels
+//{
+//    class Level : IDisposable
+//    {
+//        private Gem gem;
+//        private BubbleGenerator airBubble;
+//        private EnemyGenerator enemy;
+//        private ParallaxBG background;
+//        private bool startBuffer = true;
+
+//        public bool StartBuffer
+//        {
+//            get { return startBuffer; }
+//            set { startBuffer = value; }
+//        }
+//        // Entities in the level.
+//        public Player Player
+//        {
+//            get { return player; }
+//        }
+//        Player player;
+
+//        float levelDuration;
+
+//        public float LevelDuration
+//        {
+//            get { return levelDuration; }
+//            set { levelDuration = value; }
+//        }
+//        public bool ReachedExit
+//        {
+//            get { return reachedExit; }
+//        }
+//        bool reachedExit;
+//        private const int PointsPerSecond = 5;
+
+//        // Level content.        
+//        public ContentManager Content
+//        {
+//            get { return content; }
+//        }
+//        ContentManager content;
+//        private float elapsedTime;
+//        private Rectangle screenSize;
+
+//        public float ElapsedTime
+//        {
+//            get { return elapsedTime; }
+//            set { elapsedTime = value; }
+//        }
+
+
+//        public Level(Game game, Rectangle screensize, int startingScore, int levelIndex, int currentLives)
+//        {
+//            screenSize = screensize;
+
+//            // Create a new content manager to load content used just by this level.
+//            content = new ContentManager(game.Services);
+//            Content.RootDirectory = "Content";
+//            //load the level variables
+//            player = new Player(game, screensize, 500);
+//            player.Score = startingScore;
+//            gem = new Gem(game, screensize);
+//            airBubble = new BubbleGenerator(game, screensize);
+//            enemy = new EnemyGenerator(game, screensize);
+//            levelDuration = 200000;
+//            Player.LivesLeft = currentLives;
+
+//            LoadBackgorund(game.GraphicsDevice, levelIndex);
+
+//        }
+//        private void LoadBackgorund(GraphicsDevice graphics, int levelIndex)
+//        {
+//            background = new ParallaxBG(graphics);
+//            Texture2D back;
+//            switch (levelIndex)
+//            {
+//                case 1:
+//                    back = Content.Load<Texture2D>("Images/Backgrounds/seaHQ");
+//                    background.AddLayer(back, Vector2.Zero, 1f, -20f);
+//                    break;
+//                case 2:
+//                    back = Content.Load<Texture2D>("Images/Backgrounds/seaHQ");
+//                    background.AddLayer(back, Vector2.Zero, 1f, -20f);
+//                    break;
+//                default:
+//                    back = Content.Load<Texture2D>("Images/Backgrounds/seagreen");
+//                    background.AddLayer(back, Vector2.Zero, 1f, -20f);
+//                    back = Content.Load<Texture2D>("Images/Backgrounds/whale1");
+//                    background.AddLayer(back, Vector2.Zero, .7f, -25f);
+//                    back = Content.Load<Texture2D>("Images/Backgrounds/whale2");
+//                    background.AddLayer(back, Vector2.Zero, .2f, -50f);
+//                    break;
+
+//            }
+
+//        }
+//        public void Update(GameTime gameTime)
+//        {
+//            ElapsedTime += gameTime.ElapsedGameTime.Milliseconds;
+//            if (!StartBuffer)
+//            {
+//                background.Update(gameTime);
+//                player.Update(gameTime);
+//                gem.Update(gameTime, ElapsedTime, player);
+//                airBubble.Update(gameTime);
+//                enemy.Update(gameTime, ElapsedTime, player);
+//                HandleCollision();
+//            }
+//        }
+//        public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
+//        {
+//            background.Draw(spriteBatch);
+//            player.Draw(spriteBatch, gameTime);
+//            if (!DrawFirstLoading(spriteBatch, gameTime))
+//            {
+//                gem.Draw(spriteBatch);
+//                airBubble.Draw(spriteBatch);
+//                enemy.Draw(spriteBatch, gameTime);
+//            }
+
+//        }
+
+//        private bool DrawFirstLoading(SpriteBatch spriteBatch, GameTime gameTime)
+//        {
+//            if (StartBuffer)
+//            {
+//                Texture2D tex = null;
+//                Vector2 pos = Vector2.Zero;
+//                if (ElapsedTime <= 1000)
+//                {
+//                    tex = Content.Load<Texture2D>(@"Images/CountDown/3");
+//                    pos = new Vector2((screenSize.Width / 2) - (tex.Bounds.Width / 2),
+//                         (screenSize.Height / 2) - (tex.Bounds.Height / 2));
+//                }
+//                else if (ElapsedTime > 1000 && ElapsedTime <= 2000)
+//                {
+//                    tex = Content.Load<Texture2D>(@"Images/CountDown/2");
+//                    pos = new Vector2((screenSize.Width / 2) - (tex.Bounds.Width / 2),
+//                       (screenSize.Height / 2) - (tex.Bounds.Height / 2));
+//                }
+//                else if (ElapsedTime > 2000 && ElapsedTime <= 3000)
+//                {
+//                    tex = Content.Load<Texture2D>(@"Images/CountDown/1");
+//                    pos = new Vector2((screenSize.Width / 2) - (tex.Bounds.Width / 2),
+//                       (screenSize.Height / 2) - (tex.Bounds.Height / 2));
+//                }
+//                else if (ElapsedTime > 3000 && ElapsedTime <= 4000)
+//                {
+//                    tex = Content.Load<Texture2D>(@"Images/CountDown/go");
+//                    pos = new Vector2((screenSize.Width / 2) - (tex.Bounds.Width / 2),
+//                       (screenSize.Height / 2) - (tex.Bounds.Height / 2));
+//                }
+//                if (tex != null)
+//                    spriteBatch.Draw(tex, pos, Color.White);
+//                else
+//                {
+//                    ElapsedTime = 0;
+//                    startBuffer = false;
+//                }
+//            }
+//            else
+//            {
+//                return false;
+//            }
+//            return true;
+//        }
+
+      
+//        public void Dispose()
+//        {
+//            Content.Unload();
+//        }
+
+
+//        #region Collision Detection
+
+//        private void HandleCollision()
+//        {
+//            //check for collions only if plyaer is not taking damage
+//            if (!player.IsHit)
+//            {
+//                //check for gem collisions
+
+//                for (int i = 0; i < gem.Gems.Count; i++)
+//                {
+//                    // Check collision with person and gem
+//                    if (player.BoundingRectangle.Intersects(gem.BoundingRectangle(i))/* && !player.EnemyHit*/)
+//                    {
+//                        if (PixelCollision(player.Texture, gem.GemTexture, player.FrameID,
+//                            0, player.BoundingRectangle, gem.BoundingRectangle(i)))
+//                        {
+//                            gem.OnCollected(player, gem.Gems[i].Color);
+//                            gem.Gems.RemoveAt(i);
+//                        }
+//                    }
+//                }
+
+//                //check for bubble collisions
+//                for (int i = 0; i < airBubble.BubbleList.Count; i++)
+//                {
+//                    // Check collision with person and bubble
+//                    if (player.BoundingRectangle.Intersects(airBubble.BoundingRectangle(i))/* && !player.EnemyHit*/)
+//                    {
+
+//                        if (PixelCollision(player.Texture, airBubble.BubbleList[i].Texture, player.FrameID,
+//                            0, player.BoundingRectangle, airBubble.BoundingRectangle(i)))
+//                        {
+
+//                            airBubble.BubbleList[i].OnCollision(player);
+//                            airBubble.BubbleList.RemoveAt(i);
+//                        }
+//                    }
+//                }
+//                //check for enemy collisions
+//                for (int i = 0; i < enemy.EnemyList.Count; i++)
+//                {
+//                    // Check collision with person and bubble
+//                    if (player.BoundingRectangle.Intersects(enemy.BoundingRectangle(i))/* && !player.EnemyHit*/)
+//                    {
+//                        if (PixelCollision(player.Texture, enemy.EnemyList[i].Texture, player.FrameID,
+//                            enemy.EnemyList[i].FrameID, player.BoundingRectangle, enemy.BoundingRectangle(i)))
+//                        {
+//                            enemy.EnemyList[i].OnCollision(player);
+//                        }
+//                    }
+//                }
+
+//            }
+//        }
+//        private bool PixelCollision(Texture2D playerTexture, Texture2D npcTexture, int playerFrame, int npcFrame, Rectangle playerBounds, Rectangle npcBounds)
+//        {
+//            try
+//            {
+//                Rectangle src = new Rectangle(playerFrame * playerBounds.Width, 0, playerBounds.Width, playerBounds.Height);
+//                Rectangle src2 = new Rectangle(npcFrame * npcBounds.Width, 0, npcBounds.Width, npcBounds.Height);
+//                Color[] colorData1 = new Color[playerTexture.Width * playerTexture.Height];
+//                Color[] colorData2 = new Color[npcTexture.Width * npcTexture.Height];
+//                playerTexture.GetData<Color>(0, src, colorData1, 0, playerBounds.Width * playerBounds.Height);
+//                npcTexture.GetData<Color>(0, src2, colorData2, 0, npcBounds.Width * npcBounds.Height);
+
+
+//                // Calculate the intersecting rectangle
+//                int x1 = Math.Max(playerBounds.X, playerBounds.X);
+//                int x2 = Math.Min(playerBounds.X + playerBounds.Width, playerBounds.X + playerBounds.Width);
+
+//                int y1 = Math.Max(playerBounds.Y, npcBounds.Y);
+//                int y2 = Math.Min(playerBounds.Y + playerBounds.Height, npcBounds.Y + npcBounds.Height);
+
+//                // For each single pixel in the intersecting rectangle
+//                for (int y = y1; y < y2; ++y)
+//                {
+//                    for (int x = x1; x < x2; ++x)
+//                    {
+//                        // Get the color from each texture
+//                        Color a = colorData1[Math.Min(colorData1.Length - 1, (Math.Max(0, (x - playerBounds.X)) +
+//                            Math.Max(0, (y - playerBounds.Y) * playerBounds.Width)))];
+//                        Color b = colorData2[Math.Min(colorData2.Length - 1, (Math.Max(0, (x - npcBounds.X)) +
+//                            Math.Max(0, (y - npcBounds.Y) * npcBounds.Width)))];
+
+//                        if (a.A != 0 && b.A != 0) // If both colors are not transparent
+//                        //(the alpha channel is not 0), then there is a collision
+//                        {
+//                            return true;
+//                        }
+
+//                    }
+
+//                }
+//            }
+//            catch (Exception)
+//            {
+//                return false;
+//                // Debug.WriteLine("Bad things happened when detecting pixel collision. Error: " + ex.StackTrace);
+//            }
+
+//            return false;
+//        }
+
+//        #endregion
+
+//    }
+//}
