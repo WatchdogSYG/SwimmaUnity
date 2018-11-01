@@ -17,9 +17,11 @@ namespace Swimma {
 		public const float PLAYER_MOVE_SPEED = 15f;
 	}
 
-	public class Collectibles {
+	public class Spawning {
 		public const float GEM_AMPLIUDE = 0.8f;
 		public const float GEM_PEROID = 1.2f;
+
+		public static bool[] spawnEnabled1 = new bool[7] { true, true, true, true, true, true, true};
 	}
 
 	public class Enemies {
