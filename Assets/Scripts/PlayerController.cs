@@ -1,17 +1,23 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour {
 
+	public float score;
+	public Text t;
+
 	// Use this for initialization
 	void Start () {
+		score = 0f;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		Drift(gameObject.transform, Swimma.Environment.DRIFT_SPEED);
 		Move(Swimma.Movement.PLAYER_MOVEMENT_TYPE);
+		t.text = "Score: " + score.ToString();
 	}
 	/*
 	 * Moves t in the direction specified by Swimma.Environment.DRIFT_ANGLE at a speed of magnitude.

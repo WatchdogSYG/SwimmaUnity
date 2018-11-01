@@ -21,6 +21,8 @@ GameObject:
   - component: {fileID: 4898223431733120}
   - component: {fileID: 212653030742141358}
   - component: {fileID: 114173166821826640}
+  - component: {fileID: 58730214420783962}
+  - component: {fileID: 114474449354356154}
   m_Layer: 0
   m_Name: BubblePrefab
   m_TagString: Untagged
@@ -41,6 +43,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!58 &58730214420783962
+CircleCollider2D:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1972273522427938}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
 --- !u!114 &114173166821826640
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -52,6 +69,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2ff682de6e7bff429328ac5569c19e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  a: {fileID: 0}
+  score: 0
+--- !u!114 &114474449354356154
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1972273522427938}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3556b3ee2c30b9f48bcf9dd8e74abe63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  active: 0
 --- !u!212 &212653030742141358
 SpriteRenderer:
   m_ObjectHideFlags: 1

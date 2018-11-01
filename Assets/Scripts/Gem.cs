@@ -4,22 +4,43 @@ using UnityEngine;
 
 public class Gem : MonoBehaviour {
 
-	float amplitude;
-	float period;//of the wave y(t)
+	private float amplitude;
+	private float period;//of the wave y(t)
+	private float phase;//randomise the phase of the wave for each gem
 
-	float phase;//randomise the phase of the wave for each gem
+	public Activator a;
+
+	public float score;
 
 	// Use this for initialization
 	void Start () {
+		a = gameObject.GetComponent<Activator>();
+
 		amplitude = Swimma.Spawning.GEM_AMPLIUDE;
 		period = Swimma.Spawning.GEM_PEROID;
-
 		phase = Random.Range(0f, 2 * Mathf.PI);
+
+		//choose a colour gem and set a score value
+		int colorChoice = Random.Range(1,7);
+		KeyValuePair<Color, float> gemKV = Swimma.Score.AssignTier(colorChoice);
+		gameObject.GetComponent<SpriteRenderer>().color = gemKV.Key;
+		score = gemKV.Value;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		Move();
+		if (a.active) {
+			Move();
+		}
+	}
+
+	void OnCollisionEnter2D (Collision2D other) {
+		Debug.Log("Hit");
+		if (other.gameObject.tag == "Player") {
+			other.gameObject.GetComponent<PlayerController>().score += score;
+			print("Score + " + score + ".");
+			gameObject.GetComponent<Activator>().active = false;
+		}
 	}
 
 	/*

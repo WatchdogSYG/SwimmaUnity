@@ -8,18 +8,17 @@ public class Spawner : MonoBehaviour {
 	private GameObject[] spawnables;
 
 	readonly string[] debugNames = new string[7] { "Bubble","Gem", "Heart",  "Jellyfish", "Puffer", "Stingray", "Turtle" };
-	readonly float[] averageDelay = new float[7] { 1.5f, 30f, 15f, 1.5f, 1.5f, 1.5f, 1.5f };//the average delay between spawns
-	readonly float[] rangeDelay = new float[7] { 1f, 5f, 1f, 1f, 1f, 1f, 1f };//the range in which random times are generated for spawns
+	readonly float[] averageDelay = new float[7] { 15f, 0.5f, 30f, 15f, 15f, 15f, 15f };//the average delay between spawns
+	readonly float[] rangeDelay = new float[7] { 1f, 0.4f, 0f, 5f, 5f, 5f, 5f };//the range in which random times are generated for spawns
 
 	bool[] spawnable = Swimma.Spawning.spawnEnabled1;//Sets enemy types for lvl1;
 	float[] lastSpawn = new float[7]	{ 0f, 0f, 0f, 0f, 0f, 0f, 0f };//set these to the first spawn time - delay
-	
 	
 	float[] thisDelay = new float[7];//the delay between the next object
 
 	// Use this for initialization
 	void Start () {
-		gameObject.transform.position = Vector3.zero;//Set the reference point at the world spawn
+		gameObject.transform.position = Vector3.zero + new Vector3(10f, 0f);//Set the reference point at the world spawn
 		spawnables = new GameObject[spawnablePrefabs.Length];
 
 		//randomise first spawn times
@@ -40,7 +39,7 @@ public class Spawner : MonoBehaviour {
 					Spawn(i);
 					//generate a new spawn delay
 					RandomiseSpawnTime(i);
-					Debug.Log("Wait  " + thisDelay[i].ToString("F3") + "s before spawning another " + debugNames[i] + ".");
+					//Debug.Log("Wait  " + thisDelay[i].ToString("F3") + "s before spawning another " + debugNames[i] + ".");
 					//set thie last spwned time to now
 					lastSpawn[i] = Time.time;
 				}
