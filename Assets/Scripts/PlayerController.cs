@@ -6,28 +6,31 @@ using UnityEngine.UI;
 public class PlayerController : MonoBehaviour {
 
 	public float score;
+	public float health;
+	public float air, maxAir, airDrainRate;
+
 	public Text t;
+	public Slider s;
 
 	// Use this for initialization
 	void Start () {
 		score = 0f;
+		maxAir = s.maxValue;
+		air = maxAir;
+		airDrainRate = Swimma.Player.AIR_DRAIN_RATE;
+		health = Swimma.Player.MAX_LIVES;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		Drift(gameObject.transform, Swimma.Environment.DRIFT_SPEED);
+		Swimma.Movement.Drift(gameObject.transform, Swimma.Environment.DRIFT_SPEED);
 		Move(Swimma.Movement.PLAYER_MOVEMENT_TYPE);
-		t.text = "Score: " + score.ToString();
+		t.text = "Score: " + score.ToString() + ", HP = " + health.ToString();
+
+		air -= airDrainRate * Time.deltaTime;
+		s.value = air;
 	}
-	/*
-	 * Moves t in the direction specified by Swimma.Environment.DRIFT_ANGLE at a speed of magnitude.
-	 * 
-	 * @param Transform t		The transform to be moved
-	 * @param float Magnitude	The drifting speed
-	 */
-	void Drift(Transform t, float magnitude) {
-		t.position += magnitude * Time.deltaTime * new Vector3(Mathf.Cos(Swimma.Environment.DRIFT_ANGLE), Mathf.Sin(Swimma.Environment.DRIFT_ANGLE));//why do i have to use Vector3
-	}
+
 
 	/*
 	 * Moves the GameObject this is attached to.
@@ -39,6 +42,20 @@ public class PlayerController : MonoBehaviour {
 			transform.position += Swimma.Movement.PLAYER_MOVE_SPEED * Time.deltaTime * Vector3.Normalize(new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")));
 		} else if (movementScheme == "Smooth") {
 			transform.position += Swimma.Movement.PLAYER_MOVE_SPEED * Time.deltaTime * new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+		}
+	}
+
+	public void TakeDamage(float damage) {
+		//take damage
+		health -= damage;
+		print("Took " + damage + " Damage!");
+		//start iframes
+	}
+
+	public void RefilAir(float amount) {
+		air += amount;
+		if (air > maxAir) {
+			air = maxAir;
 		}
 	}
 }

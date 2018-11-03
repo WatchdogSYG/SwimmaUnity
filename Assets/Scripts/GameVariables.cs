@@ -15,6 +15,16 @@ namespace Swimma {
 		public static string PLAYER_MOVEMENT_TYPE = ORIGINAL;
 
 		public const float PLAYER_MOVE_SPEED = 15f;
+
+		/*
+	* Moves t in the direction specified by Swimma.Environment.DRIFT_ANGLE at a speed of magnitude.
+	* 
+	* @param Transform t		The transform to be moved
+	* @param float Magnitude	The drifting speed
+	*/
+	public static void Drift(Transform t, float magnitude) {
+			t.position += magnitude * Time.deltaTime * new Vector3(Mathf.Cos(Swimma.Environment.DRIFT_ANGLE), Mathf.Sin(Swimma.Environment.DRIFT_ANGLE));//why do i have to use Vector3
+		}
 	}
 
 	public class Spawning {
@@ -45,18 +55,6 @@ namespace Swimma {
 			}
 		}
 
-		public static Color AssignColor(int roll) {
-			switch (roll){
-				case 1: return Color.cyan;
-				case 2: return g_bronze;
-				case 3: return g_white;
-				case 4: return g_yellow;
-				case 5: return g_seaweed;
-				case 6: return g_purple;
-				default:return Color.black;
-			}
-		}
-
 		public static float AssignScore(int roll) {
 			switch (roll) {
 				case 1: return 1f;
@@ -70,6 +68,10 @@ namespace Swimma {
 		}
 	}
 
+	public class Player {
+		public const float MAX_LIVES = 5f;
+		public const float AIR_DRAIN_RATE = 6f;//air per sec
+	}
 	public class UI {
 
 	}

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CollectibleSpawner : MonoBehaviour {
+public class Bubble : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {

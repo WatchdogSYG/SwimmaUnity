@@ -8,13 +8,13 @@ public class Gem : MonoBehaviour {
 	private float period;//of the wave y(t)
 	private float phase;//randomise the phase of the wave for each gem
 
-	public Activator a;
+	public Activator activator;
 
 	public float score;
 
 	// Use this for initialization
 	void Start () {
-		a = gameObject.GetComponent<Activator>();
+		activator = gameObject.GetComponent<Activator>();
 
 		amplitude = Swimma.Spawning.GEM_AMPLIUDE;
 		period = Swimma.Spawning.GEM_PEROID;
@@ -29,7 +29,7 @@ public class Gem : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (a.active) {
+		if (activator.active) {
 			Move();
 		}
 	}
