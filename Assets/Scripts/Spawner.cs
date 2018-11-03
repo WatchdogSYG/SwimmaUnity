@@ -8,7 +8,7 @@ public class Spawner : MonoBehaviour {
 	private GameObject[] spawnables;
 
 	readonly string[] debugNames = new string[7] { "Bubble","Gem", "Heart",  "Jellyfish", "Puffer", "Stingray", "Turtle" };
-	readonly float[] averageDelay = new float[7] { 15f, 0.5f, 30f, 15f, 15f, 15f, 15f };//the average delay between spawns
+	readonly float[] averageDelay = new float[7] { 5f, 0.5f, 30f, 15f, 15f, 15f, 15f };//the average delay between spawns
 	readonly float[] rangeDelay = new float[7] { 1f, 0.4f, 0f, 5f, 5f, 5f, 5f };//the range in which random times are generated for spawns
 
 	bool[] spawnable = Swimma.Spawning.spawnEnabled1;//Sets enemy types for lvl1;

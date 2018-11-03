@@ -43,8 +43,7 @@ public class Puffer : MonoBehaviour {
 		float elapsedFrames = dt * trueFPS;//the number of frames since the last Update()d frame0;
 		elapsedFrames = elapsedFrames % animFrames;//if its above animFrames, the anim has already gone through a cycle, drop that cycle from the calcs and drop the fractional part of the float -> int
 		int currentFrame = (int)elapsedFrames;
-
-		print(currentFrame.ToString());
+		
 		switch (currentFrame) {
 			case 0://we have just deflated, stop, do not drift
 				break;

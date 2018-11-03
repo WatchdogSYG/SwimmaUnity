@@ -31,14 +31,16 @@ public class Gem : MonoBehaviour {
 	void Update () {
 		if (activator.active) {
 			Move();
+		} else {
+			transform.position = new Vector3(100f, 100f);
 		}
 	}
 
 	void OnCollisionEnter2D (Collision2D other) {
-		Debug.Log("Hit");
+		
 		if (other.gameObject.tag == "Player") {
 			other.gameObject.GetComponent<PlayerController>().score += score;
-			print("Score + " + score + ".");
+			print("Gem Collected! Score + " + score + ".");
 			gameObject.GetComponent<Activator>().active = false;
 		}
 	}
