@@ -72,6 +72,7 @@ namespace Swimma {
 		public const float MAX_LIVES = 5f;
 		public const float AIR_DRAIN_RATE = 6f;//air per sec
 	}
+
 	public class UI {
 
 	}

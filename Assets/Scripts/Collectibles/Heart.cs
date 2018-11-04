@@ -11,7 +11,7 @@ public class Heart : MonoBehaviour {
 
 	// Use this for initialization
 	void Start() {
-		baseMoveSpeed = 2f;
+		baseMoveSpeed = 3f;
 		healthAmount = 1f;
 	}
 
