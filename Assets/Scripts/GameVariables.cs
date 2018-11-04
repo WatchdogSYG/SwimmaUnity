@@ -15,20 +15,10 @@ namespace Swimma {
 		public static string PLAYER_MOVEMENT_TYPE = ORIGINAL;
 
 		public const float PLAYER_MOVE_SPEED = 15f;
-
-		/*
-	* Moves t in the direction specified by Swimma.Environment.DRIFT_ANGLE at a speed of magnitude.
-	* 
-	* @param Transform t		The transform to be moved
-	* @param float Magnitude	The drifting speed
-	*/
-	public static void Drift(Transform t, float magnitude) {
-			t.position += magnitude * Time.deltaTime * new Vector3(Mathf.Cos(Swimma.Environment.DRIFT_ANGLE), Mathf.Sin(Swimma.Environment.DRIFT_ANGLE));//why do i have to use Vector3
-		}
 	}
 
 	public class Spawning {
-		public const float GEM_AMPLIUDE = 0.8f;
+		public const float GEM_AMPLIUDE = 0.3f;
 		public const float GEM_PEROID = 1.2f;
 
 		public static bool[] spawnEnabled1 = new bool[7] { true, true, true, true, true, true, true};

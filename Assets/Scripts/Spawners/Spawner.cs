@@ -6,6 +6,7 @@ public class Spawner : MonoBehaviour {
 
 	public GameObject[] spawnablePrefabs;
 	private GameObject[] spawnables;
+	private Camera c;
 
 	readonly string[] debugNames = new string[3] { "Bubble","Gem", "Heart" };
 	readonly float[] averageDelay = new float[3] { 5f, 0.5f, 30f};//the average delay between spawns
@@ -18,6 +19,7 @@ public class Spawner : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		c = UnityEngine.Camera.main;
 		gameObject.transform.position = Vector3.zero + new Vector3(10f, 0f);//Set the reference point at the world spawn
 		spawnables = new GameObject[spawnablePrefabs.Length];
 
@@ -57,6 +59,6 @@ public class Spawner : MonoBehaviour {
 	}
 
 	void Spawn(int index) {
-		GameObject o = GameObject.Instantiate(spawnables[index],transform.position,transform.rotation) as GameObject;
+		GameObject o = GameObject.Instantiate(spawnables[index], transform.position + new Vector3(0f, Random.Range(-1f, 1f) * (c.orthographicSize - Swimma.Spawning.GEM_AMPLIUDE)), transform.rotation) as GameObject;
 	}
 }
