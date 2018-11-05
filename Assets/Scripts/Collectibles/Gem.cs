@@ -39,6 +39,7 @@ public class Gem : MonoBehaviour {
 		if (other.gameObject.tag == "Player") {
 			other.gameObject.GetComponent<PlayerController>().score += score;
 			print("Gem Collected! Score + " + score + ".");
+			gameObject.GetComponent<AudioSource>().Play();
 			Deactivate();
 		}
 	}

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour {
 
@@ -13,6 +14,8 @@ public class PlayerController : MonoBehaviour {
 	float gameTime, currentTime;
 	public float driftSpeed;
 
+	public bool paused = false;
+
 	public Text ScoreText;
 	public Slider AirBar;
 	public Slider GameTimeBar;
@@ -23,10 +26,22 @@ public class PlayerController : MonoBehaviour {
 	public Canvas c;
 	private Camera cam;
 
+	/*
+	 * src: https://answers.unity.com/questions/1174255/since-onlevelwasloaded-is-deprecated-in-540b15-wha.html
+	 */
+	void OnEnable() {
+		//Tell our 'OnLevelFinishedLoading' function to start listening for a scene change as soon as this script is enabled.
+		SceneManager.sceneLoaded += OnLevelFinishedLoading;
+	}
 
-	// Use this for initialization
-	void Start () {
-		DontDestroyOnLoad(gameObject);//persist this object through scenes
+	void OnDisable() {
+		//Tell our 'OnLevelFinishedLoading' function to stop listening for a scene change as soon as this script is disabled. Remember to always have an unsubscription for every delegate you subscribe to!
+		SceneManager.sceneLoaded -= OnLevelFinishedLoading;
+	}
+
+	void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode) {
+		//DontDestroyOnLoad(gameObject);//persist this object through scenes
+		score = GameObject.FindWithTag("Score").GetComponent<ScorePersist>().RestoreScore();
 		cam = UnityEngine.Camera.main;
 		score = 0f;
 		maxAir = AirBar.maxValue;
@@ -41,17 +56,23 @@ public class PlayerController : MonoBehaviour {
 		//choose gender
 		if (sex == 'M') {
 			gameObject.GetComponent<Animator>().runtimeAnimatorController = Resources.Load("Animations/boy_0") as RuntimeAnimatorController;
-		} else if(sex == 'F') {
+		}
+		else if (sex == 'F') {
 			gameObject.GetComponent<Animator>().runtimeAnimatorController = Resources.Load("Animations/girl_0") as RuntimeAnimatorController;
 		}
 		Instantiate(sp, c.transform.position, c.transform.rotation);
 		StartGameTime();
 	}
+	/*END src*/
+
+	// Use this for initialization
+	void Start () {
+		//start is basically in the delegate funtion above
+	}
 	
 	// Update is called once per frame
 	void Update () {
 		//Drift with the current and move with user input
-		Debug.Log("Drift at " + driftSpeed.ToString() + " units/s");
 		Move(Swimma.Movement.PLAYER_MOVEMENT_TYPE, driftSpeed, Mathf.Cos(Swimma.Environment.DRIFT_ANGLE), Mathf.Sin(Swimma.Environment.DRIFT_ANGLE));
 		//Swimma.Movement.Drift(gameObject.transform, Swimma.Environment.DRIFT_SPEED);
 		Move(Swimma.Movement.PLAYER_MOVEMENT_TYPE, Swimma.Movement.PLAYER_MOVE_SPEED, Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
@@ -61,7 +82,7 @@ public class PlayerController : MonoBehaviour {
 		ScoreText.text = "Score: " + score.ToString() + "\nHP = " + health.ToString() + "\nTime = " + currentTime.ToString("F2") + "s.";
 		GameTimeBar.value = currentTime;
 		if (currentTime > Swimma.Score.MAX_LEVEL_TIME) {
-			LevelFinish.FinishLevel();
+			Level.FinishLevel();
 		}
 		//drain air and update ui
 		RefilAir(-airDrainRate * Time.deltaTime);
@@ -124,6 +145,7 @@ public class PlayerController : MonoBehaviour {
 		} else {
 			if (!invincible) {
 				//take damage
+				gameObject.GetComponent<AudioSource>().Play();
 				health -= damage;
 				//update UI
 				heartBar.GetComponent<HeartManager>().UpdateHealth(health);

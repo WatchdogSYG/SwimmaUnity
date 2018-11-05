@@ -14,4 +14,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Lv1_Blue.unity
     guid: 5b4af0bd68c2460408cf352867d59692
+  - enabled: 1
+    path: Assets/Scenes/Lv2_Cave.unity
+    guid: 44d6cf3e0a3c3ff47b67449135502966
+  - enabled: 1
+    path: Assets/Scenes/Lv3_Green.unity
+    guid: 76c6d90dbb6574947ae9ffe0d2e4b6ea
+  - enabled: 1
+    path: Assets/Scenes/Lv4_Boat.unity
+    guid: dbf21bcea01cfdb49a4950aa580904a1
   m_configObjects: {}

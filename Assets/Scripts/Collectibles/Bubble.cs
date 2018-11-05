@@ -32,6 +32,7 @@ public class Bubble : MonoBehaviour {
 		if (other.gameObject.tag == "Player") {
 			other.gameObject.GetComponent<PlayerController>().RefilAir(airAmount);
 			print("Bubble Collected! Air + " + airAmount + ".");
+			gameObject.GetComponent<AudioSource>().Play();
 			Deactivate();
 		}
 	}

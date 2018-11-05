@@ -32,6 +32,8 @@ namespace Swimma {
 	}
 
 	public class Score {
+		public static float persistScore;
+
 		public static Color g_cyan =	new Color(104f/255f, 226f/255f, 204f/255f);
 		public static Color g_bronze =	new Color(140f/255f, 58f/255f, 18f/255f);
 		public static Color g_white =	new Color(240f/255f,240f/255f,240f/255f);
@@ -64,7 +66,7 @@ namespace Swimma {
 			}
 		}
 
-		public const float MAX_LEVEL_TIME = 5f;
+		public const float MAX_LEVEL_TIME = 120f;
 	}
 
 	public class Player {

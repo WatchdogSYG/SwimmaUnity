@@ -11,6 +11,7 @@ TagManager:
   - Jellyfish
   - Stingray
   - Turtle
+  - Score
   layers:
   - Default
   - TransparentFX
