@@ -8,6 +8,6 @@ public class Activator : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		active = true;
+		active = false;
 	}
 }

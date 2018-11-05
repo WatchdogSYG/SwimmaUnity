@@ -8,11 +8,13 @@ public class Heart : MonoBehaviour {
 	public float healthAmount;
 
 	public Activator a;
+	private Camera c;
 
 	// Use this for initialization
 	void Start() {
 		baseMoveSpeed = 3f;
 		healthAmount = 1f;
+		c = UnityEngine.Camera.main;
 	}
 
 	// Update is called once per frame
@@ -20,24 +22,26 @@ public class Heart : MonoBehaviour {
 		if (a.active) {
 			Move();
 		}
-		else {
-			transform.position = new Vector3(100f, 100f);
+		//check if it has gone being the player's screen bounds
+		if (gameObject.transform.position.x < c.ScreenToWorldPoint(new Vector3(0f, 0f)).x) {
+			Deactivate();
 		}
 	}
 
 	void OnCollisionEnter2D(Collision2D other) {
-		//is it safer to use a tag comparison or a try-catch?
-		try {
+		if (other.gameObject.tag == "Player") {
 			other.gameObject.GetComponent<PlayerController>().TakeDamage(-healthAmount);
-			print("Heart Collected!");
-		}
-		catch (System.NullReferenceException e) {
-			print("Heart NullReferenceException: No PlayerController Component found.");
-			gameObject.GetComponent<Activator>().active = false;
+			print("Heart Collected! Health + " + healthAmount + ".");
+			Deactivate();
 		}
 	}
 
 	void Move() {
 		transform.position += new Vector3(-baseMoveSpeed, 0f) * Time.deltaTime;
+	}
+
+	void Deactivate() {
+		gameObject.GetComponent<Activator>().active = false;
+		transform.position = new Vector3(100f, 100f);
 	}
 }

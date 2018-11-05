@@ -26,13 +26,25 @@ public class JellySpawner : MonoBehaviour {
 		//gameObject.transform.position = new Vector3(0f, -c.orthographicSize);
 		width = 2 * c.orthographicSize * c.aspect;
 		spawnHeightDistr = 1f;
+		InitialPool();
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		if ((Time.time - lastSpawn) >= thisDelay) {
-			//spawn
-			Spawn();
+			//try to find a pooled item
+			GameObject o = null;
+			//this is a bit heavy
+			foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Jellyfish")) {
+				if (obj.GetComponent<Activator>().active == false) {
+					o = obj;
+					break;
+				}
+			}
+			//spawn only if theres an inactive obj waiting
+			if (o != null) {
+				Spawn(o);
+			}
 			//generate a new spawn delay
 			if (jellyCount<maxJelly) {
 				//we are still in a spawnwave, use small delays
@@ -49,11 +61,18 @@ public class JellySpawner : MonoBehaviour {
 		}
 	}
 
-	void Spawn() {
+	void InitialPool() {
+		for (int i = 0; i < maxJelly; i++) {
+			GameObject o = Instantiate(jelly, gameObject.transform.position, gameObject.transform.rotation) as GameObject;
+		}
+	}
+
+	void Spawn(GameObject obj) {
 		//spawns maxJellies Jellyfish evenly horizontally distributed with somewhat randomised y values
 		float randomY = Random.Range(-spawnHeightDistr / 2f, spawnHeightDistr / 2f);
 		Debug.Log("Spawn Jelly at " + gameObject.transform.position + new Vector3((jellyCount - (maxJelly / 2f) + 1f) * width / (maxJelly), randomY).ToString());
-		Instantiate(jelly, gameObject.transform.position + new Vector3((jellyCount - (maxJelly / 2f) + 1f) * width / (maxJelly), randomY), gameObject.transform.rotation);
+		obj.transform.position = gameObject.transform.position + new Vector3((jellyCount - (maxJelly / 2f) + 1f) * width / (maxJelly), randomY);
+		obj.GetComponent<Activator>().active = true;
 		jellyCount++;
 	}
 

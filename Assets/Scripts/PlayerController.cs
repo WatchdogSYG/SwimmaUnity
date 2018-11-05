@@ -81,7 +81,7 @@ public class PlayerController : MonoBehaviour {
 		Vector3 initialPos = gameObject.transform.position;//for worldbound checking later
 
 		//check the direction of the player input
-		if ( x < 0f) {
+		if ( x < 0f ) {
 			gameObject.GetComponent<SpriteRenderer>().flipX = true;
 		} else {
 			gameObject.GetComponent<SpriteRenderer>().flipX = false;

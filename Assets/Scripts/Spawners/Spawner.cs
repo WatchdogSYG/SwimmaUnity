@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//this class is now unused. It is fully functional except for object pooling. The class you should use is CollectibleSpawner.
 public class Spawner : MonoBehaviour {
 
 	public GameObject[] spawnablePrefabs;
@@ -11,8 +12,7 @@ public class Spawner : MonoBehaviour {
 	readonly string[] debugNames = new string[3] { "Bubble","Gem", "Heart" };
 	readonly float[] averageDelay = new float[3] { 5f, 0.5f, 30f};//the average delay between spawns
 	readonly float[] rangeDelay = new float[3] { 1f, 0.4f, 0f};//the range in which random times are generated for spawns
-
-	bool[] spawnable = Swimma.Spawning.spawnEnabled1;//Sets enemy types for lvl1;
+	
 	float[] lastSpawn = new float[3]	{ 10f, 0f, 10f };//set these to the first spawn time - delay
 	
 	float[] thisDelay = new float[3];//the delay between the next object
@@ -27,24 +27,22 @@ public class Spawner : MonoBehaviour {
 		for (int i = 0; i < 3; i++) {
 			RandomiseSpawnTime(i);
 			spawnables[i] = Instantiate(spawnablePrefabs[i]) as GameObject;
-		}
 
+		}
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		//Spawn a gem when we reach the spawn delay
 		for(int i = 0; i < 3; i++) {
-			if (spawnable[i]) {
-				if ((Time.time - lastSpawn[i]) >= thisDelay[i]) {
-					//spawn
-					Spawn(i);
-					//generate a new spawn delay
-					RandomiseSpawnTime(i);
-					//Debug.Log("Wait  " + thisDelay[i].ToString("F3") + "s before spawning another " + debugNames[i] + ".");
-					//set thie last spwned time to now
-					lastSpawn[i] = Time.time;
-				}
+			if ((Time.time - lastSpawn[i]) >= thisDelay[i]) {
+				//spawn
+				Spawn(i);
+				//generate a new spawn delay
+				RandomiseSpawnTime(i);
+				//Debug.Log("Wait  " + thisDelay[i].ToString("F3") + "s before spawning another " + debugNames[i] + ".");
+				//set thie last spwned time to now
+				lastSpawn[i] = Time.time;
 			}
 		}
 	}

@@ -21,7 +21,14 @@ namespace Swimma {
 		public const float GEM_AMPLIUDE = 0.3f;
 		public const float GEM_PEROID = 1.2f;
 
-		public static bool[] spawnEnabled1 = new bool[7] { true, true, true, true, true, true, true};
+		public const float maxJelly = 4f;
+		public const float maxStingray = 3f;
+		public const float maxPuffer = 3f;
+		public const float maxTurtle = 3f;
+
+		public const float maxGem = 30f;
+		public const float maxBubble = 3f;
+		public const float maxHeart = 2f;
 	}
 
 	public class Score {

@@ -3,7 +3,14 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Gem
+  - Bubble
+  - Heart
+  - Puffer
+  - Jellyfish
+  - Stingray
+  - Turtle
   layers:
   - Default
   - TransparentFX

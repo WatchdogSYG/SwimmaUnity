@@ -6,6 +6,7 @@ public class Jellyfish : MonoBehaviour {
 
 	public Activator activator;
 	public Animator animator;
+	private Camera c;
 
 	private float trueFPS, defaultFPS, lastAnimCycle;
 	private readonly float animFrames = 5f;
@@ -15,6 +16,7 @@ public class Jellyfish : MonoBehaviour {
 	void Start() {
 		activator = gameObject.GetComponent<Activator>();
 		animator = gameObject.GetComponent<Animator>();
+		c = UnityEngine.Camera.main;
 		trueFPS = 8f;
 		defaultFPS = 12f;
 		animator.speed = trueFPS / defaultFPS;
@@ -27,13 +29,21 @@ public class Jellyfish : MonoBehaviour {
 		if (activator.active) {
 			Move();
 		}
+		//check if it has gone being the player's screen bounds
+		if (gameObject.transform.position.y > c.ScreenToWorldPoint(new Vector3(0f, Screen.height)).y) {
+			Deactivate();
+		}
 	}
 
 	void OnCollisionEnter2D(Collision2D other) {
 		if (other.gameObject.tag == "Player") {
 			other.gameObject.GetComponent<PlayerController>().TakeDamage(1f);
-			gameObject.GetComponent<Activator>().active = false;
 		}
+	}
+
+	void Deactivate() {
+		gameObject.GetComponent<Activator>().active = false;
+		transform.position = new Vector3(100f, 100f);
 	}
 	
 	void Move() {
