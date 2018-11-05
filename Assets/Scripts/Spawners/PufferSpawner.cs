@@ -5,22 +5,37 @@ using UnityEngine;
 public class PufferSpawner : MonoBehaviour {
 
 	readonly float averageDelay = 5f;//the average delay between spawns
-	readonly float rangeDelay = 1f;//the range in which random times are generated for spawns
+	readonly float rangeDelay = 4f;//the range in which random times are generated for spawns
 	float lastSpawn = 0f;//set these to the first spawn time - delay
 	float thisDelay;//the delay between the next object
-
+	float maxPuffer;
 	public GameObject puffer;
+	private Camera c;
 
 	// Use this for initialization
-	void Start () {
-		
+	void Start() {
+		maxPuffer = Swimma.Spawning.maxPuffer;
+		c = UnityEngine.Camera.main;
+		InitialPool();
 	}
-	
+
 	// Update is called once per frame
-	void Update () {
+	void Update() {
 		if ((Time.time - lastSpawn) >= thisDelay) {
-			//spawn
-			Spawn();
+			//try to find a pooled item
+			GameObject o = null;
+			//this is a bit heavy
+			foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Puffer")) {
+				if (obj.GetComponent<Activator>().active == false) {
+					o = obj;
+					break;
+				}
+			}
+			//spawn only if theres an inactive obj waiting
+			if (o != null) {
+				Spawn(o);
+			}
+			//generate a new spawn delay
 			RandomiseSpawnTime(averageDelay, rangeDelay);
 
 			Debug.Log("Wait  " + thisDelay.ToString("F3") + "s before spawning another Puffer.");
@@ -29,15 +44,21 @@ public class PufferSpawner : MonoBehaviour {
 		}
 	}
 
-	void Spawn() {
-		//spawns a Puffer with randomised y values
+	void Spawn(GameObject obj) {
+		//spawns a stingray with randomised y values
 		Vector3 here = gameObject.transform.position;
-		Camera c = UnityEngine.Camera.main;
 		Debug.Log("Spawn Puffer at " + (here + new Vector3(0f, Random.Range(here.y + c.orthographicSize, here.y - c.orthographicSize)).ToString()));
-		Instantiate(puffer, here + new Vector3(0f, Random.Range(here.y + c.orthographicSize, here.y - c.orthographicSize)), gameObject.transform.rotation);
+		obj.transform.position = here + new Vector3(0f, Random.Range(here.y + c.orthographicSize, here.y - c.orthographicSize));
+		obj.GetComponent<Activator>().active = true;
 	}
 
 	void RandomiseSpawnTime(float average, float range) {
 		thisDelay = Random.Range(average - range, average + range);
+	}
+
+	void InitialPool() {
+		for (int i = 0; i < maxPuffer; i++) {
+			GameObject o = Instantiate(puffer, gameObject.transform.position, gameObject.transform.rotation) as GameObject;
+		}
 	}
 }

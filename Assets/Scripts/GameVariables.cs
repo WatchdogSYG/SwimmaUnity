@@ -14,7 +14,7 @@ namespace Swimma {
 
 		public static string PLAYER_MOVEMENT_TYPE = ORIGINAL;
 
-		public const float PLAYER_MOVE_SPEED = 15f;
+		public const float PLAYER_MOVE_SPEED = 12f;
 	}
 
 	public class Spawning {
@@ -63,6 +63,8 @@ namespace Swimma {
 				default: return 0f;
 			}
 		}
+
+		public const float MAX_LEVEL_TIME = 5f;
 	}
 
 	public class Player {

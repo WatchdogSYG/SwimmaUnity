@@ -6,6 +6,7 @@ public class Stingray : MonoBehaviour {
 
 	public Activator activator;
 	public Animator animator;
+	private Camera c;
 
 	private float trueFPS, defaultFPS, lastAnimCycle;
 	private readonly float animFrames = 7f;
@@ -15,6 +16,7 @@ public class Stingray : MonoBehaviour {
 	void Start() {
 		activator = gameObject.GetComponent<Activator>();
 		animator = gameObject.GetComponent<Animator>();
+		c = UnityEngine.Camera.main;
 		trueFPS = 4f;
 		defaultFPS = 12f;
 		animator.speed = trueFPS / defaultFPS;
@@ -27,13 +29,21 @@ public class Stingray : MonoBehaviour {
 		if (activator.active) {
 			Move();
 		}
+		//check if it has gone being the player's screen bounds
+		if (gameObject.transform.position.x < c.ScreenToWorldPoint(new Vector3(0f,0f)).x) {
+			Deactivate();
+		}
 	}
 
 	void OnCollisionEnter2D(Collision2D other) {
 		if (other.gameObject.tag == "Player") {
 			other.gameObject.GetComponent<PlayerController>().TakeDamage(1f);
-			gameObject.GetComponent<Activator>().active = false;
 		}
+	}
+
+	void Deactivate() {
+		gameObject.GetComponent<Activator>().active = false;
+		transform.position = new Vector3(100f, 100f);
 	}
 
 	void Move() {

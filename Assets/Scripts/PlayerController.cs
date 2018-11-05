@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour {
 	public float air, maxAir, airDrainRate;
 	public char sex;
 	float gameTime, currentTime;
+	public float driftSpeed;
 
 	public Text ScoreText;
 	public Slider AirBar;
@@ -25,6 +26,7 @@ public class PlayerController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		DontDestroyOnLoad(gameObject);//persist this object through scenes
 		cam = UnityEngine.Camera.main;
 		score = 0f;
 		maxAir = AirBar.maxValue;
@@ -34,6 +36,7 @@ public class PlayerController : MonoBehaviour {
 		iTime = 2f;//number of seconds to be invincible for
 		invincible = false;
 		hitTime = 0f;
+		driftSpeed = Swimma.Environment.DRIFT_SPEED;
 
 		//choose gender
 		if (sex == 'M') {
@@ -48,7 +51,8 @@ public class PlayerController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		//Drift with the current and move with user input
-		Move(Swimma.Movement.PLAYER_MOVEMENT_TYPE, Swimma.Environment.DRIFT_SPEED, Mathf.Cos(Swimma.Environment.DRIFT_ANGLE), Mathf.Sin(Swimma.Environment.DRIFT_ANGLE));
+		Debug.Log("Drift at " + driftSpeed.ToString() + " units/s");
+		Move(Swimma.Movement.PLAYER_MOVEMENT_TYPE, driftSpeed, Mathf.Cos(Swimma.Environment.DRIFT_ANGLE), Mathf.Sin(Swimma.Environment.DRIFT_ANGLE));
 		//Swimma.Movement.Drift(gameObject.transform, Swimma.Environment.DRIFT_SPEED);
 		Move(Swimma.Movement.PLAYER_MOVEMENT_TYPE, Swimma.Movement.PLAYER_MOVE_SPEED, Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
 		//update gameTime value;
@@ -56,6 +60,9 @@ public class PlayerController : MonoBehaviour {
 		//update UI tied to player
 		ScoreText.text = "Score: " + score.ToString() + "\nHP = " + health.ToString() + "\nTime = " + currentTime.ToString("F2") + "s.";
 		GameTimeBar.value = currentTime;
+		if (currentTime > Swimma.Score.MAX_LEVEL_TIME) {
+			LevelFinish.FinishLevel();
+		}
 		//drain air and update ui
 		RefilAir(-airDrainRate * Time.deltaTime);
 		//check if we need to stop being invincible

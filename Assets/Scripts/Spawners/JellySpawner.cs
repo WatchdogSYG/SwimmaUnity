@@ -20,7 +20,7 @@ public class JellySpawner : MonoBehaviour {
 
 	// Pool nJellies = maxJellies together horizontally distributed around the spawner 
 	void Start () {
-		maxJelly = 4f;
+		maxJelly = Swimma.Spawning.maxJelly;
 		jellyCount = 0;
 		c = UnityEngine.Camera.main;
 		//gameObject.transform.position = new Vector3(0f, -c.orthographicSize);
