@@ -66,7 +66,7 @@ namespace Swimma {
 			}
 		}
 
-		public const float MAX_LEVEL_TIME = 120f;
+		public const float MAX_LEVEL_TIME = 100f;
 	}
 
 	public class Player {
